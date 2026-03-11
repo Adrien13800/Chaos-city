@@ -335,6 +335,9 @@ function JobService.ChangeJob(player: Player, newJobId: string)
     -- Changer le métier dans les données
     DataService.SetCurrentJob(player, newJobId)
 
+    -- Notifier le client pour mettre à jour le HUD
+    remoteEvents.JobChanged:FireClient(player, newJobId)
+
     -- Annuler la mission en cours
     activeMissions[player.UserId] = nil
 

@@ -61,6 +61,7 @@ local heroRankingUpdatedEvent = remoteEvents:WaitForChild("HeroRankingUpdated")
 local missionAssignedEvent = remoteEvents:WaitForChild("MissionAssigned")
 local missionCompletedEvent = remoteEvents:WaitForChild("MissionCompleted")
 local jobLevelUpEvent = remoteEvents:WaitForChild("JobLevelUp")
+local jobChangedEvent = remoteEvents:WaitForChild("JobChanged")
 local getPlayerDataFunc = remoteFunctions:WaitForChild("GetPlayerData")
 
 -- ============================================================================
@@ -676,6 +677,10 @@ end)
 
 jobLevelUpEvent.OnClientEvent:Connect(function(jobId, newLevel)
     showLevelUp(jobId, newLevel)
+end)
+
+jobChangedEvent.OnClientEvent:Connect(function(newJobId)
+    updateJob(newJobId)
 end)
 
 -- ============================================================================

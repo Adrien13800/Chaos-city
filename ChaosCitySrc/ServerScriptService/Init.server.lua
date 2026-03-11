@@ -100,6 +100,7 @@ createRemoteEvent("HeroRankingUpdated")  -- Envoyer le classement Héros du Chao
 createRemoteEvent("JobLevelUp")          -- Notifier le client d'un level up de métier
 createRemoteEvent("MissionAssigned")     -- Assigner une nouvelle mission au client
 createRemoteEvent("MissionCompleted")    -- Confirmer qu'une mission est terminée
+createRemoteEvent("JobChanged")          -- Notifier le client qu'il a changé de métier
 
 -- ── Remote Events (Client → Serveur) ──
 createRemoteEvent("RequestJobChange")    -- Le client demande à changer de métier
