@@ -139,6 +139,10 @@ PhaseService.Init()
 local JobService = require(ServerScriptService.Services.JobService)
 JobService.Init()
 
+-- Charger et initialiser l'EconomyService (achats, transactions, money sinks)
+local EconomyService = require(ServerScriptService.Services.EconomyService)
+EconomyService.Init()
+
 -- Les prochains services seront initialisés ici au fur et à mesure :
 -- local ChaosService = require(ServerScriptService.Services.ChaosService)
 -- ChaosService.Init()
