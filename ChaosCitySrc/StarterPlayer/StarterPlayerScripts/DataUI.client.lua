@@ -64,6 +64,10 @@ local remoteFunctions = events:WaitForChild("RemoteFunctions")
 local cashUpdatedEvent = remoteEvents:WaitForChild("CashUpdated")
 local chaosStarsUpdatedEvent = remoteEvents:WaitForChild("ChaosStarsUpdated")
 local phaseChangedEvent = remoteEvents:WaitForChild("PhaseChanged")
+local disasterStartedEvent = remoteEvents:WaitForChild("DisasterStarted")
+local heroRankingEvent = remoteEvents:WaitForChild("HeroRankingUpdated")
+local missionAssignedEvent = remoteEvents:WaitForChild("MissionAssigned")
+local missionCompletedEvent = remoteEvents:WaitForChild("MissionCompleted")
 local jobLevelUpEvent = remoteEvents:WaitForChild("JobLevelUp")
 
 -- Remote Functions
@@ -118,13 +122,93 @@ chaosStarsUpdatedEvent.OnClientEvent:Connect(function(newStars: number)
 end)
 
 -- Quand la phase de jeu change
-phaseChangedEvent.OnClientEvent:Connect(function(phaseName: string, duration: number)
-    print("[UI] === PHASE : " .. phaseName .. " (" .. duration .. "s) ===")
+phaseChangedEvent.OnClientEvent:Connect(function(phaseName: string, duration: number, extraData: any?)
+    print("[UI] ═══════════════════════════════════")
 
-    -- TODO : Déclencher les effets visuels selon la phase
-    -- if phaseName == "Alert" then → sirènes, changement de ciel
-    -- if phaseName == "Chaos" then → camera shake, particules
-    -- if phaseName == "Result" then → afficher le classement
+    if phaseName == "Calm" then
+        print("[UI] PHASE : CALME — Travaillez et préparez-vous !")
+        print("[UI] Durée : " .. duration .. "s")
+
+    elseif phaseName == "Alert" then
+        print("[UI] ⚠ PHASE : ALERTE — QUELQUE CHOSE ARRIVE...")
+        print("[UI] Durée : " .. duration .. "s")
+        if extraData then
+            print("[UI] Catastrophe détectée : " .. tostring(extraData.DisasterName))
+            if extraData.IsCombo then
+                print("[UI] COMBO ! " .. tostring(extraData.DisasterName) .. " + " .. tostring(extraData.SecondDisasterName))
+            end
+        end
+
+    elseif phaseName == "Chaos" then
+        print("[UI] PHASE : CHAOS — SURVIVEZ ET TRAVAILLEZ !")
+        print("[UI] Durée : " .. duration .. "s")
+        if extraData then
+            print("[UI] Multiplicateur de base : x" .. tostring(extraData.BaseMultiplier))
+            print("[UI] Intensité : x" .. tostring(extraData.IntensityScale))
+        end
+
+    elseif phaseName == "Result" then
+        print("[UI] PHASE : RÉSULTAT")
+        if extraData then
+            print("[UI] Catastrophe survécue : " .. tostring(extraData.DisasterName))
+            print("[UI] Combo streak : " .. tostring(extraData.ChaosCount))
+            if extraData.Ranking and #extraData.Ranking > 0 then
+                print("[UI] ═══ HÉROS DU CHAOS ═══")
+                for _, entry in ipairs(extraData.Ranking) do
+                    print("[UI]   #" .. entry.Rank .. " " .. entry.Name .. " — " .. entry.Score .. " pts")
+                end
+            else
+                print("[UI] (Aucun héros cette fois)")
+            end
+        end
+    end
+
+    print("[UI] ═══════════════════════════════════")
+end)
+
+-- Quand une catastrophe démarre (effets visuels spécifiques)
+disasterStartedEvent.OnClientEvent:Connect(function(disasterType: string, chaosData)
+    print("[UI] >>> CATASTROPHE : " .. disasterType .. " <<<")
+    -- TODO : C'est ici qu'on déclenchera les effets visuels spécifiques :
+    -- Earthquake → camera shake
+    -- Flood → montée des eaux
+    -- Meteors → boules de feu dans le ciel
+    -- AlienInvasion → vaisseau + lumière verte
+    -- Tornado → entonnoir + vent
+    -- Blackout → nuit totale
+end)
+
+-- Quand le classement Héros est envoyé après un chaos
+heroRankingEvent.OnClientEvent:Connect(function(ranking)
+    if ranking and #ranking > 0 then
+        print("[UI] >>> CLASSEMENT FINAL <<<")
+        for _, entry in ipairs(ranking) do
+            print("[UI]   #" .. entry.Rank .. " " .. entry.Name .. " — " .. entry.Score .. " pts")
+        end
+    end
+end)
+
+-- Quand une mission est assignée
+missionAssignedEvent.OnClientEvent:Connect(function(missionInfo)
+    print("[UI] ── NOUVELLE MISSION ──")
+    print("[UI] " .. tostring(missionInfo.Description))
+    print("[UI] Temps : " .. tostring(missionInfo.Duration) .. "s")
+    if missionInfo.IsChaos then
+        print("[UI] MISSION DE CHAOS — Multiplicateurs actifs !")
+    end
+    -- TODO : Afficher la mission dans un panel UI à l'écran
+    -- TODO : Afficher un marqueur sur la minimap vers la zone de mission
+end)
+
+-- Quand une mission est complétée
+missionCompletedEvent.OnClientEvent:Connect(function(result)
+    print("[UI] ── MISSION COMPLÉTÉE ! ──")
+    print("[UI] +$" .. tostring(result.CashEarned) .. " | +" .. tostring(result.XPEarned) .. " XP")
+    if result.IsChaos and result.ChaosScoreEarned > 0 then
+        print("[UI] +" .. tostring(result.ChaosScoreEarned) .. " pts Héros du Chaos !")
+    end
+    print("[UI] Cash total : $" .. tostring(result.NewCash))
+    -- TODO : Afficher un popup de récompense avec animation
 end)
 
 -- Quand on monte de niveau dans un métier

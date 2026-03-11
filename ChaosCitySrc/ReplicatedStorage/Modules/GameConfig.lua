@@ -86,6 +86,14 @@ GameConfig.Jobs = {
         ChaosMultiplierHeroic = 5,
         Color = Color3.fromRGB(158, 158, 158),
     },
+    Bandit = {
+        DisplayName = "Bandit",
+        MaxLevel = 10,
+        BasePayPerMission = 90,      -- Paye faible en phase calme (risqué, discret)
+        ChaosMultiplierBase = 6,     -- x6 en chaos (le plus haut après Pompier/Médecin)
+        ChaosMultiplierHeroic = 12,  -- x12 pour les pillages héroïques — HIGH RISK HIGH REWARD
+        Color = Color3.fromRGB(120, 20, 160),  -- Violet sombre
+    },
 }
 
 -- ============================================================================

@@ -40,6 +40,7 @@ PlayerData.Template = {
         Engineer    = { Level = 1, XP = 0 },
         Police      = { Level = 1, XP = 0 },
         Civilian    = { Level = 1, XP = 0 },
+        Bandit      = { Level = 1, XP = 0 },
     },
 
     -- Statistiques globales (pour le profil / achievements futurs)

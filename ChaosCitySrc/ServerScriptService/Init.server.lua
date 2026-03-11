@@ -131,11 +131,15 @@ print("[Init] RemoteEvents et RemoteFunctions créés.")
 local DataService = require(ServerScriptService.Services.DataService)
 DataService.Init()
 
+-- Charger et initialiser le PhaseService (cycle Calme/Alerte/Chaos/Résultat)
+local PhaseService = require(ServerScriptService.Services.PhaseService)
+PhaseService.Init()
+
+-- Charger et initialiser le JobService (métiers, missions, XP)
+local JobService = require(ServerScriptService.Services.JobService)
+JobService.Init()
+
 -- Les prochains services seront initialisés ici au fur et à mesure :
--- local PhaseService = require(ServerScriptService.Services.PhaseService)
--- PhaseService.Init()
--- local JobService = require(ServerScriptService.Services.JobService)
--- JobService.Init()
 -- local ChaosService = require(ServerScriptService.Services.ChaosService)
 -- ChaosService.Init()
 
