@@ -415,6 +415,11 @@ function PhaseService._RunResultPhase()
     notifyPhaseChange("Result", duration, resultData)
     heroRankingUpdatedEvent:FireAllClients(rankingData)
 
+    -- Notifier le HeroService pour les titres et la statue
+    local HeroService = require(ServerScriptService.Services.HeroService)
+    local disasterDisplayName = currentDisaster and GameConfig.Disasters[currentDisaster].DisplayName or "?"
+    HeroService.ProcessRanking(rankingData, disasterDisplayName)
+
     -- Countdown de 1 minute
     while timeRemaining > 0 do
         task.wait(1)
