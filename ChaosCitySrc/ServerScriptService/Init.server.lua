@@ -143,9 +143,15 @@ JobService.Init()
 local EconomyService = require(ServerScriptService.Services.EconomyService)
 EconomyService.Init()
 
+-- Charger et initialiser le ChaosService (catastrophes, zones de danger, KO)
+local ChaosService = require(ServerScriptService.Services.ChaosService)
+ChaosService.Init()
+
 -- Les prochains services seront initialisés ici au fur et à mesure :
--- local ChaosService = require(ServerScriptService.Services.ChaosService)
--- ChaosService.Init()
+-- local HeroService = require(ServerScriptService.Services.HeroService)
+-- HeroService.Init()
+-- local BettingService = require(ServerScriptService.Services.BettingService)
+-- BettingService.Init()
 
 print("═══════════════════════════════════════")
 print("   CHAOS CITY — Serveur démarré !")
