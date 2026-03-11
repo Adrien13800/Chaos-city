@@ -64,6 +64,12 @@ PlayerData.Template = {
         Furniture = {},        -- Liste des meubles placés (pour une future implémentation)
     },
 
+    -- Gamepasses possédés (cache local, vérifié au login)
+    OwnedGamepasses = {},  -- { "VIP", "DoubleInventory", ... }
+
+    -- Boosts temporaires
+    XPBoostExpiry = 0,     -- Timestamp d'expiration du boost XP x2 (0 = pas actif)
+
     -- Métadonnées
     JoinDate = 0,          -- Timestamp de la première connexion (os.time())
     LastSave = 0,          -- Timestamp de la dernière sauvegarde

@@ -63,8 +63,9 @@ end
 -- ============================================================================
 -- SERVICES INTERNES (chargés à la demande pour éviter les dépendances circulaires)
 -- ============================================================================
-local DataService = nil    -- Chargé dans Init()
-local PhaseService = nil   -- Chargé dans Init()
+local DataService = nil             -- Chargé dans Init()
+local PhaseService = nil            -- Chargé dans Init()
+local MonetizationService = nil     -- Chargé à la demande (initialisé après JobService)
 
 -- ============================================================================
 -- REMOTE EVENTS
@@ -263,6 +264,13 @@ function JobService.CompleteMission(player: Player)
 
     local playerLevel = DataService.GetJobLevel(player, active.JobId)
     local rewards = calculateReward(active.MissionData, active.JobId, active.IsChaos, playerLevel)
+
+    -- Appliquer les multiplicateurs Gamepasses/Boosts
+    MonetizationService = MonetizationService or require(ServerScriptService.Services.MonetizationService)
+    local cashMultiplier = MonetizationService.GetCashMultiplier(player)  -- x2 si VIP
+    local xpMultiplier = MonetizationService.GetXPMultiplier(player)     -- x2 si boost actif
+    rewards.Cash = math.floor(rewards.Cash * cashMultiplier)
+    rewards.XP = math.floor(rewards.XP * xpMultiplier)
 
     -- Distribuer les récompenses via DataService (vérifié et sécurisé)
     DataService.AddCash(player, rewards.Cash)

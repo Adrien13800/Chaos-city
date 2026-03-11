@@ -43,7 +43,8 @@ end
 -- ============================================================================
 -- SERVICES INTERNES
 -- ============================================================================
-local DataService = nil  -- Chargé dans Init()
+local DataService = nil             -- Chargé dans Init()
+local MonetizationService = nil     -- Chargé à la demande
 
 -- ============================================================================
 -- REMOTE EVENTS
@@ -213,10 +214,14 @@ function EconomyService.PurchaseConsumable(player: Player, consumableId: string)
         return false, "Consommable inconnu"
     end
 
-    -- Vérifier le stack max
+    -- Vérifier le stack max (doublé si le joueur a le pass Double Inventaire)
+    MonetizationService = MonetizationService or require(ServerScriptService.Services.MonetizationService)
+    local hasDouble = MonetizationService.HasDoubleInventory(player)
+    local effectiveMax = hasDouble and (consumableInfo.MaxStack * 2) or consumableInfo.MaxStack
+
     local currentAmount = data.Inventory[consumableId] or 0
-    if currentAmount >= consumableInfo.MaxStack then
-        return false, "Tu en as déjà le maximum (" .. consumableInfo.MaxStack .. ") !"
+    if currentAmount >= effectiveMax then
+        return false, "Tu en as déjà le maximum (" .. effectiveMax .. ") !"
     end
 
     -- Vérifier le cash

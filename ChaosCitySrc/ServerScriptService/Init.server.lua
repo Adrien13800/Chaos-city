@@ -156,6 +156,10 @@ HeroService.Init()
 local BettingService = require(ServerScriptService.Services.BettingService)
 BettingService.Init()
 
+-- Charger et initialiser le MonetizationService (Gamepasses, DevProducts, achats Robux)
+local MonetizationService = require(ServerScriptService.Services.MonetizationService)
+MonetizationService.Init()
+
 print("═══════════════════════════════════════")
 print("   CHAOS CITY — Serveur démarré !")
 print("═══════════════════════════════════════")
